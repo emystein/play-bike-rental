@@ -4,15 +4,17 @@
 # ~~~~
 
 # An example controller showing a sample home page
-GET      /                                  controllers.HomeController.index
+GET     /                                         controllers.HomeController.index
 
-POST     /users                             controllers.UserController.create()
-GET      /users/:id                         controllers.UserController.retrieve(id: String)
+POST    /users                                    controllers.UserController.create()
+GET     /users/:id                                controllers.UserController.retrieve(id: String)
+GET     /users/:id/rent-token                     controllers.UserController.reserveTokenForUser(id: String)
 
-POST     /bikes/:serialNumber               controllers.BikeController.create(serialNumber: String)
-GET      /bikes/:serialNumber               controllers.BikeController.retrieve(serialNumber: String)
+POST    /bikes/:serialNumber                      controllers.BikeController.create(serialNumber: String)
+GET     /bikes/:serialNumber                      controllers.BikeController.retrieve(serialNumber: String)
 
-GET      /rent-tokens/:userId               controllers.RentTokenRegistryController.getNewToken(userId: String)
+GET     /bike-stations/:stationId/anchorages/:anchorageId/:tokenValue     controllers.BikeStationController.pickupBike(stationId: String, anchorageId: Int, tokenValue: String)
+
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
+GET     /assets/*file                             controllers.Assets.versioned(path="/public", file: Asset)
 

@@ -1,5 +1,5 @@
 import ar.com.flow.bikerental.model.token._
-import ar.com.flow.bikerental.model.{BikeRepository, InMemoryBikeRepository, InMemoryUserRepository, UserRepository}
+import ar.com.flow.bikerental.model.{BikeRepository, BikeStationRepository, InMemoryBikeRepository, InMemoryBikeStationRepository, InMemoryUserRepository, UserRepository}
 import com.google.inject.AbstractModule
 
 class Module extends AbstractModule {
@@ -13,5 +13,7 @@ class Module extends AbstractModule {
                                       new InMemoryConsumedRentTokenRepository
     )
     bind(classOf[TokenRegistry]).toInstance(tokenRegistry)
+
+    bind(classOf[BikeStationRepository]).to(classOf[InMemoryBikeStationRepository]).asEagerSingleton()
   }
 }
