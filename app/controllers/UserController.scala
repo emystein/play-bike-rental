@@ -11,18 +11,18 @@ import play.api.mvc._
 
 @Singleton
 class UserController @Inject()(val controllerComponents: ControllerComponents, val userRepository: UserRepository, val tokenRegistry: TokenRegistry) extends BaseController {
-  def create(): Action[User] = Action(parse.json[User]) { request =>
+  def create() = Action(parse.json[User]) { request =>
     userRepository.save(request.body)
     Created(request.body.id)
   }
 
-  def retrieve(serialNumber: String): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
+  def retrieve(serialNumber: String) = Action {
     userRepository.getById(serialNumber)
       .map(user => Ok(Json.toJson(user)))
       .getOrElse(NotFound(serialNumber))
   }
 
-  def reserveTokenForUser(userId: String): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
+  def reserveTokenForUser(userId: String) = Action {
     userRepository.getById(userId)
       .map(user => tokenRegistry.reserveTokenForUser(user))
       .map(reservedToken => Ok(Json.toJson(reservedToken)))
