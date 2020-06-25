@@ -1,16 +1,14 @@
 package controllers
 
 import ar.com.flow.bikerental.model.User
-import ar.com.flow.bikerental.model.token._
 import controllers.JsonMappers._
-import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.play._
 import org.scalatestplus.play.guice._
 import play.api.libs.json.Json
 import play.api.test.Helpers._
 import play.api.test._
 
-class UserControllerSpec extends PlaySpec with GuiceOneAppPerTest with BeforeAndAfterEach {
+class UserControllerSpec extends PlaySpec with GuiceOneAppPerTest {
   val user = User("1", "emystein")
 
   "UserController" should {
@@ -25,13 +23,17 @@ class UserControllerSpec extends PlaySpec with GuiceOneAppPerTest with BeforeAnd
       create(user)
 
       val token = reserveToken(user)
+
+      token.owner mustBe user
+      token.value mustNot be(null)
+      token.expiration mustNot be(null)
     }
   }
 
-  private def reserveToken(user: User): RentToken = {
+  private def reserveToken(user: User): ReservedRentTokenDto = {
     val response = route(app, FakeRequest(GET, s"/users/${user.id}/rent-token")).get
     status(response) mustBe OK
-    contentAsJson(response).as[RentToken]
+    contentAsJson(response).as[ReservedRentTokenDto]
   }
 
   private def retrieveUser(userId: String): User = {

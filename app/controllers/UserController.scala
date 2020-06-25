@@ -1,5 +1,7 @@
 package controllers
 
+import java.time.LocalDateTime
+
 import ar.com.flow.bikerental.model.{User, UserRepository}
 import javax.inject.{Inject, Singleton}
 import play.api.libs.json._
@@ -28,3 +30,5 @@ class UserController @Inject()(val controllerComponents: ControllerComponents, v
       .getOrElse(NotFound(userId))
   }
 }
+
+case class ReservedRentTokenDto(value: String, expiration: LocalDateTime, owner: User)
