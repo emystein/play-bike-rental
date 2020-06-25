@@ -6,7 +6,7 @@ POST    /users                                    controllers.UserController.cre
 GET     /users/:id                                controllers.UserController.retrieve(id: String)
 GET     /users/:id/rent-token                     controllers.UserController.reserveTokenForUser(id: String)
 
-POST    /bikes/:serialNumber                      controllers.BikeController.create(serialNumber: String)
+POST    /bikes                                    controllers.BikeController.create()
 GET     /bikes/:serialNumber                      controllers.BikeController.retrieve(serialNumber: String)
 
 POST    /bike-stations                            controllers.BikeStationController.create()

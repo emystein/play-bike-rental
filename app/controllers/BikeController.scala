@@ -8,9 +8,9 @@ import play.api.mvc.{BaseController, ControllerComponents}
 
 @Singleton
 class BikeController @Inject()(val controllerComponents: ControllerComponents, val bikeRepository: BikeRepository) extends BaseController {
-  def create(serialNumber: String) = Action {
-    bikeRepository.save(Bike(serialNumber))
-    Created(serialNumber)
+  def create() = Action(parse.json[Bike]) { request =>
+    bikeRepository.save(request.body)
+    Created(request.body.serialNumber)
   }
 
   def retrieve(serialNumber: String) = Action {

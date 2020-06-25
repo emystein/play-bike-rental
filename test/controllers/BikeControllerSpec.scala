@@ -22,7 +22,7 @@ class BikeControllerSpec extends PlaySpec with GuiceOneAppPerTest {
   }
 
   private def create(bike: Bike): Unit = {
-    val request = FakeRequest(POST, s"/bikes/${bike.serialNumber}").withJsonBody(Json.toJson(bike))
+    val request = FakeRequest(POST, "/bikes").withJsonBody(Json.toJson(bike))
     val response = route(app, request).get
     status(response) mustBe CREATED
   }
