@@ -2,19 +2,18 @@ package controllers
 
 import java.time.LocalDateTime
 
+import ar.com.flow.bikerental.model.token.TokenRegistry
 import ar.com.flow.bikerental.model.{User, UserRepository}
+import controllers.JsonMappers._
 import javax.inject.{Inject, Singleton}
 import play.api.libs.json._
-import play.api.mvc.{Action, AnyContent, BaseController, ControllerComponents, Request}
-import JsonMappers._
-import ar.com.flow.bikerental.model.token.TokenRegistry
+import play.api.mvc._
 
 @Singleton
 class UserController @Inject()(val controllerComponents: ControllerComponents, val userRepository: UserRepository, val tokenRegistry: TokenRegistry) extends BaseController {
-  def create(): Action[JsValue] = Action(parse.json) { implicit request: Request[JsValue] =>
-    val user = request.body.as[User]
-    userRepository.save(user)
-    Created(user.id)
+  def create(): Action[User] = Action(parse.json[User]) { request =>
+    userRepository.save(request.body)
+    Created(request.body.id)
   }
 
   def retrieve(serialNumber: String): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>

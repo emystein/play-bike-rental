@@ -1,14 +1,12 @@
 package controllers
 
 import ar.com.flow.bikerental.model.token.{ReservedRentToken, TokenRegistry}
-import ar.com.flow.bikerental.model.{Bike, BikeShop, BikeStation, BikeStationRepository, TripRegistry, User}
+import ar.com.flow.bikerental.model._
+import controllers.BikeStationJsonMappers._
 import controllers.JsonMappers._
 import javax.inject.{Inject, Singleton}
 import play.api.libs.json._
 import play.api.mvc._
-import BikeStationJsonMappers._
-
-import scala.concurrent.Future
 
 @Singleton
 class BikeStationController @Inject()(val controllerComponents: ControllerComponents,
