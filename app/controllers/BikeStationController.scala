@@ -32,8 +32,9 @@ class BikeStationController @Inject()(val controllerComponents: ControllerCompon
     val maybeBikeStation: Option[BikeStation] = for {
       station <- bikeStationRepository.getById(stationId)
       bikeSerialNumber <- bikeSerialNumber
+      _ <- station.parkBikeAtAnchorage(Bike(bikeSerialNumber), anchorageId)
     } yield {
-      station.parkBikeAtAnchorage(Bike(bikeSerialNumber), anchorageId)
+      station
     }
 
     maybeBikeStation.map(s => Ok(Json.toJson(BikeStationDto(s.id, s.numberOfBikeAnchorages.toString)))).getOrElse(NotFound)
