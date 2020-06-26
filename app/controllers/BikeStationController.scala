@@ -29,15 +29,14 @@ class BikeStationController @Inject()(val controllerComponents: ControllerCompon
   }
 
   def parkBike(stationId: String, anchorageId: Int, bikeSerialNumber: Option[String]) = Action {
-    val station: Option[BikeStation] = for {
+    val maybeBikeStation: Option[BikeStation] = for {
       station <- bikeStationRepository.getById(stationId)
-      anchorage <- station.getAnchorageById(anchorageId)
       bikeSerialNumber <- bikeSerialNumber
-      bike = Bike(bikeSerialNumber)
-      b <- anchorage.parkBike(bike)
-    } yield station
+    } yield {
+      station.parkBikeAtAnchorage(Bike(bikeSerialNumber), anchorageId)
+    }
 
-    station.map(s => Ok(Json.toJson(BikeStationDto(s.id, s.numberOfBikeAnchorages.toString)))).getOrElse(NotFound)
+    maybeBikeStation.map(s => Ok(Json.toJson(BikeStationDto(s.id, s.numberOfBikeAnchorages.toString)))).getOrElse(NotFound)
   }
 
   def pickupBike(stationId: String, anchorageId: Int, rentToken: Option[String]) = Action {

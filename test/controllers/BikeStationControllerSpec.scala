@@ -28,8 +28,8 @@ class BikeStationControllerSpec extends PlaySpec with GuiceOneAppPerTest {
       val user = User("1", "emystein")
       createUser(user)
       val rentToken = reserveToken(user)
-
       create(bikeStationId = "1", numberOfBikeAnchorages = 10)
+      parkBike(bikeStationId = "1", anchorageId = 1)
 
       val bike = pickUpBike(bikeStationId = "1", anchorageId = 1, rentToken.value)
 
@@ -58,11 +58,11 @@ class BikeStationControllerSpec extends PlaySpec with GuiceOneAppPerTest {
     contentAsJson(response).as[BikeStationDto]
   }
 
-  private def pickUpBike(bikeStationId: String, anchorageId: Int, rentToken: String): BikeStationDto = {
+  private def pickUpBike(bikeStationId: String, anchorageId: Int, rentToken: String): Bike = {
     val request = FakeRequest(GET, s"/bike-stations/$bikeStationId/anchorages/$anchorageId/bike?rentToken=$rentToken")
     val response = route(app, request).get
     status(response) mustBe OK
-    contentAsJson(response).as[BikeStationDto]
+    contentAsJson(response).as[Bike]
   }
 
   // TODO reuse from UserControllerSpec
