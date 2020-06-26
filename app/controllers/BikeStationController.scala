@@ -15,34 +15,52 @@ class BikeStationController @Inject()(val controllerComponents: ControllerCompon
                                       val tripRegistry: TripRegistry,
                                       val bikeShop: BikeShop) extends BaseController {
 
-  def create(): Action[BikeStationDto] = Action(parse.json[BikeStationDto]) { request =>
+  def create() = Action(parse.json[BikeStationDto]) { request =>
     val bikeStation = new BikeStation(request.body.id, request.body.numberOfBikeAnchorages.toInt, tripRegistry, bikeShop)
     bikeStationRepository.save(bikeStation)
     Created(request.body.id)
   }
 
-  def retrieve(id: String): Action[AnyContent] = Action { request =>
+  def retrieve(id: String) = Action {
     bikeStationRepository.getById(id)
       .map(bikeStation => BikeStationDto(bikeStation.id, bikeStation.numberOfBikeAnchorages.toString))
       .map(bikeStation => Ok(Json.toJson(bikeStation)))
       .getOrElse(NotFound(id))
   }
 
-  def pickupBike(stationId: String, anchorageId: Int, tokenValue: String): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
+  def parkBike(stationId: String, anchorageId: Int, bikeSerialNumber: Option[String]) = Action {
+    val station: Option[BikeStation] = for {
+      station <- bikeStationRepository.getById(stationId)
+      anchorage <- station.getAnchorageById(anchorageId)
+      bikeSerialNumber <- bikeSerialNumber
+      bike = Bike(bikeSerialNumber)
+      b <- anchorage.parkBike(bike)
+    } yield station
+
+    station.map(s => Ok(Json.toJson(BikeStationDto(s.id, s.numberOfBikeAnchorages.toString)))).getOrElse(NotFound)
+  }
+
+  def pickupBike(stationId: String, anchorageId: Int, rentToken: Option[String]) = Action {
       val bike: Option[Bike] = for {
-        reservedToken <- tokenRegistry.getTokenByValue(tokenValue)
         station <- bikeStationRepository.getById(stationId)
         anchorage <- station.getAnchorageById(anchorageId)
+        rentTokenValue <- rentToken
+        reservedToken <- tokenRegistry.getTokenByValue(rentTokenValue)
         bike <- anchorage.releaseBike(reservedToken.asInstanceOf[ReservedRentToken])
       } yield bike
 
-      bike.map(bike => Ok(Json.toJson(bike))).getOrElse(NotFound(tokenValue))
+      bike.map(bike => Ok(Json.toJson(bike))).getOrElse(NotFound)
   }
 }
 
 case class BikeStationDto(id: String, numberOfBikeAnchorages: String)
 
+case class BikePickUpRequest(rentToken: String)
+
 object BikeStationJsonMappers {
   implicit val bikeStationDtoReads: Reads[BikeStationDto] = Json.reads[BikeStationDto]
   implicit val bikeStationDtoWrites: Writes[BikeStationDto] = Json.writes[BikeStationDto]
+  
+  implicit val bikePickUpRequestReads: Reads[BikePickUpRequest] = Json.reads[BikePickUpRequest]
+  implicit val bikePickUpRequestWrites: Writes[BikePickUpRequest] = Json.writes[BikePickUpRequest]
 }

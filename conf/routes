@@ -10,6 +10,7 @@ POST    /bikes                                    controllers.BikeController.cre
 GET     /bikes/:serialNumber                      controllers.BikeController.retrieve(serialNumber: String)
 
 POST    /bike-stations                            controllers.BikeStationController.create()
+POST    /bike-stations/:id/anchorages/:anchorageId/bike     controllers.BikeStationController.parkBike(id: String, anchorageId: Int, bikeSerialNumber: Option[String])
+GET     /bike-stations/:id/anchorages/:anchorageId/bike     controllers.BikeStationController.pickupBike(id: String, anchorageId: Int, rentToken: Option[String])
 GET     /bike-stations/:id                        controllers.BikeStationController.retrieve(id: String)
-GET     /bike-stations/:id/anchorages/:anchorageId/:tokenValue     controllers.BikeStationController.pickupBike(id: String, anchorageId: Int, tokenValue: String)
 
