@@ -2,14 +2,13 @@ package rest.controllers
 
 import java.time.LocalDateTime
 
-import ar.com.flow.bikerental.model.{User, UserRepository}
 import ar.com.flow.bikerental.model.token.{ReservedRentToken, TokenRegistry}
+import ar.com.flow.bikerental.model.{User, UserRepository}
 import javax.inject.{Inject, Singleton}
 import play.api.libs.json.{Json, Reads, Writes}
-import play.api.mvc.{Action, BaseController, ControllerComponents, Result}
+import play.api.mvc.{BaseController, ControllerComponents}
+import rest.controllers.RentTokenJsonMappers._
 import rest.controllers.UserJsonMappers.{userWrites, _}
-import UserJsonMappers._
-import RentTokenJsonMappers._
 
 @Singleton
 class UserController @Inject()(val controllerComponents: ControllerComponents, val userRepository: UserRepository, val tokenRegistry: TokenRegistry) extends BaseController {
@@ -18,16 +17,15 @@ class UserController @Inject()(val controllerComponents: ControllerComponents, v
     Created(Json.toJson(user))
   }
 
-  def retrieve(userId: Long) = Action {
-    userRepository.getById(userId)
-      .map(user => Ok(Json.toJson(user)))
-      .getOrElse(NotFound(userId.toString))
-  }
+  def retrieve(userId: Long) = getForUser[User](userId)(identity)
 
-  def reserveTokenForUser(userId: Long) = Action {
+  def reserveTokenForUser(userId: Long) =
+    getForUser[ReservedRentToken](userId)(tokenRegistry.reserveTokenForUser(_))
+
+  private def getForUser[T](userId: Long)(f: User => T)(implicit writes: Writes[T]) = Action {
     userRepository.getById(userId)
-      .map(user => tokenRegistry.reserveTokenForUser(user))
-      .map(reservedToken => Ok(Json.toJson(reservedToken)))
+      .map(f)
+      .map(result => Ok(Json.toJson(result)(writes)))
       .getOrElse(NotFound(userId.toString))
   }
 }
