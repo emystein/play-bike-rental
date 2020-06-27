@@ -1,12 +1,12 @@
-package controllers
+package rest.controllers
 
-import ar.com.flow.bikerental.model.token.{ReservedRentToken, TokenRegistry}
 import ar.com.flow.bikerental.model._
-import controllers.BikeStationJsonMappers._
-import controllers.JsonMappers._
+import ar.com.flow.bikerental.model.token.{ReservedRentToken, TokenRegistry}
 import javax.inject.{Inject, Singleton}
 import play.api.libs.json._
 import play.api.mvc._
+import BikeJsonMappers._
+import BikeStationJsonMappers._
 
 @Singleton
 class BikeStationController @Inject()(val controllerComponents: ControllerComponents,

@@ -27,7 +27,6 @@ http post http://localhost:9000/bikes serialNumber=1
 http http://localhost:9000/bikes/1
 ```
 
-
 # Bike Station
 
 ## Create Bike Station

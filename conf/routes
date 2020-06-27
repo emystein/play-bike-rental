@@ -2,15 +2,15 @@ GET     /                                         controllers.HomeController.ind
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file                             controllers.Assets.versioned(path="/public", file: Asset)
 
-POST    /users                                    controllers.UserController.create()
-GET     /users/:id                                controllers.UserController.retrieve(id: String)
-GET     /users/:id/rent-token                     controllers.UserController.reserveTokenForUser(id: String)
+POST    /users                                    rest.controllers.UserController.create()
+GET     /users/:id                                rest.controllers.UserController.retrieve(id: String)
+GET     /users/:id/rent-token                     rest.controllers.UserController.reserveTokenForUser(id: String)
 
-POST    /bikes                                    controllers.BikeController.create()
-GET     /bikes/:serialNumber                      controllers.BikeController.retrieve(serialNumber: String)
+POST    /bikes                                    rest.controllers.BikeController.create()
+GET     /bikes/:serialNumber                      rest.controllers.BikeController.retrieve(serialNumber: String)
 
-POST    /bike-stations                            controllers.BikeStationController.create()
-POST    /bike-stations/:id/anchorages/:anchorageId/bike     controllers.BikeStationController.parkBike(id: String, anchorageId: Int, bikeSerialNumber: Option[String])
-GET     /bike-stations/:id/anchorages/:anchorageId/bike     controllers.BikeStationController.pickupBike(id: String, anchorageId: Int, rentToken: Option[String])
-GET     /bike-stations/:id                        controllers.BikeStationController.retrieve(id: String)
+POST    /bike-stations                            rest.controllers.BikeStationController.create()
+POST    /bike-stations/:id/anchorages/:anchorageId/bike     rest.controllers.BikeStationController.parkBike(id: String, anchorageId: Int, bikeSerialNumber: Option[String])
+GET     /bike-stations/:id/anchorages/:anchorageId/bike     rest.controllers.BikeStationController.pickupBike(id: String, anchorageId: Int, rentToken: Option[String])
+GET     /bike-stations/:id                        rest.controllers.BikeStationController.retrieve(id: String)
 

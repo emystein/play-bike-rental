@@ -1,13 +1,15 @@
-package controllers
+package rest.controllers
 
 import ar.com.flow.bikerental.model.{Bike, User}
-import controllers.BikeStationJsonMappers._
-import controllers.JsonMappers._
 import org.scalatestplus.play._
 import org.scalatestplus.play.guice._
 import play.api.libs.json.Json
 import play.api.test.Helpers._
 import play.api.test._
+import BikeJsonMappers._
+import RentTokenJsonMappers._
+import UserJsonMappers._
+import BikeStationJsonMappers._
 
 class BikeStationControllerSpec extends PlaySpec with GuiceOneAppPerTest {
   "BikeStationController" should {

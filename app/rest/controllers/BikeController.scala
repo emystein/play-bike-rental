@@ -1,10 +1,10 @@
-package controllers
+package rest.controllers
 
 import ar.com.flow.bikerental.model.{Bike, BikeRepository}
-import controllers.JsonMappers._
 import javax.inject.{Inject, Singleton}
 import play.api.libs.json._
 import play.api.mvc.{BaseController, ControllerComponents}
+import rest.controllers.BikeJsonMappers._
 
 @Singleton
 class BikeController @Inject()(val controllerComponents: ControllerComponents, val bikeRepository: BikeRepository) extends BaseController {
@@ -18,4 +18,9 @@ class BikeController @Inject()(val controllerComponents: ControllerComponents, v
       .map(bike => Ok(Json.toJson(bike)))
       .getOrElse(NotFound(serialNumber))
   }
+}
+
+object BikeJsonMappers {
+  implicit val bikeReads: Reads[Bike] = Json.reads[Bike]
+  implicit val bikeWrites: Writes[Bike] = Json.writes[Bike]
 }

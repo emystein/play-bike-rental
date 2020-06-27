@@ -1,12 +1,13 @@
-package controllers
+package rest.controllers
 
 import ar.com.flow.bikerental.model.User
-import controllers.JsonMappers._
 import org.scalatestplus.play._
 import org.scalatestplus.play.guice._
 import play.api.libs.json.Json
 import play.api.test.Helpers._
 import play.api.test._
+import UserJsonMappers._
+import RentTokenJsonMappers._
 
 class UserControllerSpec extends PlaySpec with GuiceOneAppPerTest {
   val user = User("1", "emystein")
