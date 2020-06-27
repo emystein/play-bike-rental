@@ -8,7 +8,16 @@ lazy val root = (project in file(".")).enablePlugins(PlayScala)
 scalaVersion := "2.13.2"
 
 libraryDependencies += guice
+
+libraryDependencies ++= Seq(
+  jdbc,
+  evolutions,
+  "org.playframework.anorm" %% "anorm" % "2.6.7",
+  "com.h2database" % "h2" % "1.4.192"
+)
+
 libraryDependencies += "ar.com.flow" %% "scala-object-oriented-bike-rental-model" % "0.1.0-SNAPSHOT"
+
 libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "5.0.0" % Test
 
 // Adds additional packages into Twirl
