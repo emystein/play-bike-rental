@@ -8,13 +8,14 @@ import javax.inject.{Inject, Singleton}
 import play.api.libs.json.{Json, Reads, Writes}
 import play.api.mvc.{BaseController, ControllerComponents}
 import rest.controllers.UserJsonMappers.{userWrites, _}
+import UserJsonMappers._
 import RentTokenJsonMappers._
 
 @Singleton
 class UserController @Inject()(val controllerComponents: ControllerComponents, val userRepository: UserRepository, val tokenRegistry: TokenRegistry) extends BaseController {
   def create() = Action(parse.json[User]) { request =>
-    userRepository.save(request.body)
-    Created(request.body.id)
+    val user: User = userRepository.save(request.body)
+    Created(Json.toJson(user))
   }
 
   def retrieve(serialNumber: String) = Action {

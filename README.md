@@ -6,7 +6,7 @@ The examples are written in [httpie](https://httpie.org/) syntax.
 
 ### Create User
 ```
-http post http://localhost:9000/users id=1 name=emystein
+http post http://localhost:9000/users name=emystein
 ```
 
 ### Retrieve User

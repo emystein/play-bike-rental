@@ -10,43 +10,44 @@ import UserJsonMappers._
 import RentTokenJsonMappers._
 
 class UserControllerSpec extends PlaySpec with GuiceOneAppPerTest {
-  val user = User("1", "emystein")
+  val user = User(id = None, name = "emystein")
 
   "UserController" should {
     "create and retrieve user" in {
-      create(user)
+      val createdUser = create(user)
 
-      val retrievedUser = retrieveUser(user.id)
+      val retrievedUser = retrieveUser(createdUser.id)
 
-      retrievedUser mustBe user
+      retrievedUser.name mustBe createdUser.name
     }
     "reserve token" in {
-      create(user)
+      val createdUser = create(user)
 
-      val token = reserveToken(user)
+      val token = reserveToken(createdUser)
 
-      token.owner mustBe user
+      token.owner.name mustBe createdUser.name
       token.value mustNot be(null)
       token.expiration mustNot be(null)
     }
   }
 
   private def reserveToken(user: User): ReservedRentTokenDto = {
-    val response = route(app, FakeRequest(GET, s"/users/${user.id}/rent-token")).get
+    val response = route(app, FakeRequest(GET, s"/users/${user.id.get}/rent-token")).get
     status(response) mustBe OK
     contentAsJson(response).as[ReservedRentTokenDto]
   }
 
-  private def retrieveUser(userId: String): User = {
-    val request = FakeRequest(GET, s"/users/$userId")
+  private def retrieveUser(userId: Option[String]): User = {
+    val request = FakeRequest(GET, s"/users/${userId.get}")
     val response = route(app, request).get
     status(response) mustBe OK
     contentAsJson(response).as[User]
   }
 
-  private def create(user: User): Unit = {
+  private def create(user: User): User = {
     val request = FakeRequest(POST, "/users").withJsonBody(Json.toJson(user))
     val response = route(app, request).get
     status(response) mustBe CREATED
+    contentAsJson(response).as[User]
   }
 }

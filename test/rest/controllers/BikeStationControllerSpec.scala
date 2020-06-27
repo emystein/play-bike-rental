@@ -6,10 +6,10 @@ import org.scalatestplus.play.guice._
 import play.api.libs.json.Json
 import play.api.test.Helpers._
 import play.api.test._
-import BikeJsonMappers._
-import RentTokenJsonMappers._
-import UserJsonMappers._
-import BikeStationJsonMappers._
+import rest.controllers.BikeJsonMappers._
+import rest.controllers.BikeStationJsonMappers._
+import rest.controllers.RentTokenJsonMappers._
+import rest.controllers.UserJsonMappers._
 
 class BikeStationControllerSpec extends PlaySpec with GuiceOneAppPerTest {
   "BikeStationController" should {
@@ -27,7 +27,7 @@ class BikeStationControllerSpec extends PlaySpec with GuiceOneAppPerTest {
       parkBike(bikeStationId = "1", anchorageId = 1)
     }
     "pickup bike" in {
-      val user = User("1", "emystein")
+      val user = User(Some("1"), "emystein")
       createUser(user)
       val rentToken = reserveToken(user)
       create(bikeStationId = "1", numberOfBikeAnchorages = 10)
@@ -74,7 +74,7 @@ class BikeStationControllerSpec extends PlaySpec with GuiceOneAppPerTest {
     status(response) mustBe CREATED
   }
   private def reserveToken(user: User): ReservedRentTokenDto = {
-    val response = route(app, FakeRequest(GET, s"/users/${user.id}/rent-token")).get
+    val response = route(app, FakeRequest(GET, s"/users/${user.id.get}/rent-token")).get
     status(response) mustBe OK
     contentAsJson(response).as[ReservedRentTokenDto]
   }
