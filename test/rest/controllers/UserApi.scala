@@ -17,7 +17,7 @@ object UserApi extends MustMatchers {
     contentAsJson(response).as[User]
   }
 
-  def retrieveUser(userId: Option[String])(implicit app: Application): User = {
+  def retrieveUser(userId: Option[Long])(implicit app: Application): User = {
     val request = FakeRequest(GET, s"/users/${userId.get}")
     val response = route(app, request).get
     status(response) mustBe OK

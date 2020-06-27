@@ -3,8 +3,8 @@ GET     /                           controllers.HomeController.index
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
 
 POST    /users                      rest.controllers.UserController.create()
-GET     /users/:id                  rest.controllers.UserController.retrieve(id: String)
-GET     /users/:id/rent-token       rest.controllers.UserController.reserveTokenForUser(id: String)
+GET     /users/:userId                  rest.controllers.UserController.retrieve(userId: Long)
+GET     /users/:userId/rent-token       rest.controllers.UserController.reserveTokenForUser(userId: Long)
 
 POST    /bikes                      rest.controllers.BikeController.create()
 GET     /bikes/:serialNumber        rest.controllers.BikeController.retrieve(serialNumber: String)

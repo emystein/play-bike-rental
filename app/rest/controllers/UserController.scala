@@ -6,7 +6,7 @@ import ar.com.flow.bikerental.model.{User, UserRepository}
 import ar.com.flow.bikerental.model.token.{ReservedRentToken, TokenRegistry}
 import javax.inject.{Inject, Singleton}
 import play.api.libs.json.{Json, Reads, Writes}
-import play.api.mvc.{BaseController, ControllerComponents}
+import play.api.mvc.{Action, BaseController, ControllerComponents, Result}
 import rest.controllers.UserJsonMappers.{userWrites, _}
 import UserJsonMappers._
 import RentTokenJsonMappers._
@@ -18,17 +18,17 @@ class UserController @Inject()(val controllerComponents: ControllerComponents, v
     Created(Json.toJson(user))
   }
 
-  def retrieve(serialNumber: String) = Action {
-    userRepository.getById(serialNumber)
+  def retrieve(userId: Long) = Action {
+    userRepository.getById(userId)
       .map(user => Ok(Json.toJson(user)))
-      .getOrElse(NotFound(serialNumber))
+      .getOrElse(NotFound(userId.toString))
   }
 
-  def reserveTokenForUser(userId: String) = Action {
+  def reserveTokenForUser(userId: Long) = Action {
     userRepository.getById(userId)
       .map(user => tokenRegistry.reserveTokenForUser(user))
       .map(reservedToken => Ok(Json.toJson(reservedToken)))
-      .getOrElse(NotFound(userId))
+      .getOrElse(NotFound(userId.toString))
   }
 }
 

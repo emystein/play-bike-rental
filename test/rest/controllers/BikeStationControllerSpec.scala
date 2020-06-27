@@ -26,7 +26,7 @@ class BikeStationControllerSpec extends PlaySpec with GuiceOneAppPerTest {
       parkBike(bikeStationId = "1", anchorageId = 1)
     }
     "pickup bike" in {
-      val user = User(Some("1"), "emystein")
+      val user = User(Some(1), "emystein")
       createUser(user)
       val rentToken = reserveToken(user)
       create(bikeStationId = "1", numberOfBikeAnchorages = 10)

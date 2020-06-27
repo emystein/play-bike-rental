@@ -2,14 +2,14 @@ import ar.com.flow.bikerental.model.token._
 import ar.com.flow.bikerental.model.trip.completion.{TripCompletionRules, TripCompletionRulesFactory}
 import ar.com.flow.bikerental.model.{BikeRepository, BikeShop, BikeStationRepository, InMemoryBikeRepository, InMemoryBikeStationRepository, InMemoryUserRepository, TripRegistry, UserRepository}
 import com.google.inject.AbstractModule
-import persistence.JdbcUserRepository
+import persistence.AnormUserRepository
 
 import scala.util.Random
 
 class Module extends AbstractModule {
   override def configure(): Unit = {
 //    bind(classOf[UserRepository]).to(classOf[InMemoryUserRepository]).asEagerSingleton()
-    bind(classOf[UserRepository]).to(classOf[JdbcUserRepository]).asEagerSingleton()
+    bind(classOf[UserRepository]).to(classOf[AnormUserRepository]).asEagerSingleton()
 
     bind(classOf[BikeRepository]).to(classOf[InMemoryBikeRepository]).asEagerSingleton()
 

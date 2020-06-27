@@ -6,7 +6,7 @@ import org.scalatestplus.play.guice._
 import rest.controllers.UserApi._
 
 class UserControllerSpec extends PlaySpec with GuiceOneAppPerTest {
-  val user = User(id = None, name = "emystein")
+  val user = User(name = "emystein")
 
   "UserController" should {
     "create and retrieve user" in {
