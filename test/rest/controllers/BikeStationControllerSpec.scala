@@ -18,7 +18,7 @@ class BikeStationControllerSpec extends PlaySpec with GuiceOneAppPerTest {
 
       val bikeStation = retrieveBikeStation("1")
 
-      bikeStation.id mustBe "1"
+      bikeStation.id mustBe Some("1")
       bikeStation.numberOfBikeAnchorages mustBe "10"
     }
     "park bike" in {
@@ -40,7 +40,7 @@ class BikeStationControllerSpec extends PlaySpec with GuiceOneAppPerTest {
   }
 
   private def create(bikeStationId: String, numberOfBikeAnchorages: Int): Unit = {
-    val bikeStation = BikeStationDto(bikeStationId, numberOfBikeAnchorages.toString)
+    val bikeStation = BikeStationDto(Some(bikeStationId), numberOfBikeAnchorages.toString)
     val request = FakeRequest(POST, "/bike-stations").withJsonBody(Json.toJson(bikeStation))
     val response = route(app, request).get
     status(response) mustBe CREATED

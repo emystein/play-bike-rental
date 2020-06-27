@@ -16,9 +16,9 @@ class BikeStationController @Inject()(val controllerComponents: ControllerCompon
                                       val bikeShop: BikeShop) extends BaseController {
 
   def create() = Action(parse.json[BikeStationDto]) { request =>
-    val bikeStation = new BikeStation(request.body.id, request.body.numberOfBikeAnchorages.toInt, tripRegistry, bikeShop)
-    bikeStationRepository.save(bikeStation)
-    Created(request.body.id)
+    val bikeStation = BikeStation(request.body.id, request.body.numberOfBikeAnchorages.toInt, tripRegistry, bikeShop)
+    val createdBikeStation = bikeStationRepository.save(bikeStation)
+    Created(Json.toJson(createdBikeStation.id))
   }
 
   def retrieve(id: String) = Action {
@@ -53,7 +53,7 @@ class BikeStationController @Inject()(val controllerComponents: ControllerCompon
   }
 }
 
-case class BikeStationDto(id: String, numberOfBikeAnchorages: String)
+case class BikeStationDto(id: Option[String], numberOfBikeAnchorages: String)
 
 case class BikePickUpRequest(rentToken: String)
 
