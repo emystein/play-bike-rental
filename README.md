@@ -40,7 +40,7 @@ http post http://localhost:9000/bike-stations id=1 numberOfBikeAnchorages=10
 
 ### Park Bike
 ```
-http post 'http://localhost:9000/bike-stations/1/anchorages/1/bike?bikeSerialNumber=1
+http post 'http://localhost:9000/bike-stations/1/anchorages/1/bike serialNumber=1
 ```
 
 ### Pick-up Bike

@@ -12,6 +12,6 @@ GET     /bikes/:serialNumber        rest.controllers.BikeController.retrieve(ser
 POST    /bike-stations                                             rest.controllers.BikeStationController.create()
 GET     /bike-stations/:id                                         rest.controllers.BikeStationController.retrieve(id: String)
 
-POST    /bike-stations/:id/anchorages/:anchorageId/bike            rest.controllers.BikeStationController.parkBike(id: String, anchorageId: Int, bikeSerialNumber: Option[String])
+POST    /bike-stations/:id/anchorages/:anchorageId/bike            rest.controllers.BikeStationController.parkBike(id: String, anchorageId: Int)
 POST    /bike-stations/:id/anchorages/:anchorageId/bike/pickup     rest.controllers.BikeStationController.pickupBike(id: String, anchorageId: Int, rentToken: Option[String])
 

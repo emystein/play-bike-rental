@@ -23,14 +23,14 @@ class BikeStationControllerSpec extends PlaySpec with GuiceOneAppPerTest {
     "park bike" in {
       create(bikeStationId = "1", numberOfBikeAnchorages = 10)
 
-      parkBike(bikeStationId = "1", anchorageId = 1)
+      parkBike(bikeStationId = "1", anchorageId = 1, bikeSerialNumber = "1")
     }
     "pickup bike" in {
       val user = User(Some(1), "emystein")
       createUser(user)
       val rentToken = reserveToken(user)
       create(bikeStationId = "1", numberOfBikeAnchorages = 10)
-      parkBike(bikeStationId = "1", anchorageId = 1)
+      parkBike(bikeStationId = "1", anchorageId = 1, bikeSerialNumber = "1")
 
       val bike = pickUpBike(bikeStationId = "1", anchorageId = 1, rentToken.value)
 
@@ -52,8 +52,10 @@ class BikeStationControllerSpec extends PlaySpec with GuiceOneAppPerTest {
     contentAsJson(response).as[BikeStationDto]
   }
 
-  private def parkBike(bikeStationId: String, anchorageId: Int): BikeStationDto = {
-    val request = FakeRequest(POST, s"/bike-stations/$bikeStationId/anchorages/$anchorageId/bike?bikeSerialNumber=1")
+  private def parkBike(bikeStationId: String, anchorageId: Int, bikeSerialNumber: String): BikeStationDto = {
+    val bike = Bike( bikeSerialNumber)
+    val request = FakeRequest(POST, s"/bike-stations/$bikeStationId/anchorages/$anchorageId/bike")
+      .withJsonBody(Json.toJson(bike))
     val response = route(app, request).get
     status(response) mustBe OK
     contentAsJson(response).as[BikeStationDto]

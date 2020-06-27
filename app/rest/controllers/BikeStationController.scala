@@ -28,11 +28,11 @@ class BikeStationController @Inject()(val controllerComponents: ControllerCompon
       .getOrElse(NotFound(id))
   }
 
-  def parkBike(stationId: String, anchorageId: Int, bikeSerialNumber: Option[String]) = Action {
+  def parkBike(stationId: String, anchorageId: Int) = Action(parse.json[Bike]) { request =>
     val maybeBikeStation: Option[BikeStation] = for {
       station <- bikeStationRepository.getById(stationId)
-      bikeSerialNumber <- bikeSerialNumber
-      _ <- station.parkBikeAtAnchorage(Bike(bikeSerialNumber), anchorageId)
+      anchorage <- station.getAnchorageById(anchorageId)
+      _ = anchorage.parkBike(request.body)
     } yield {
       station
     }
