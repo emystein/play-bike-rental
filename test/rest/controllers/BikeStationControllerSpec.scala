@@ -61,7 +61,7 @@ class BikeStationControllerSpec extends PlaySpec with GuiceOneAppPerTest {
   }
 
   private def pickUpBike(bikeStationId: String, anchorageId: Int, rentToken: String): Bike = {
-    val request = FakeRequest(GET, s"/bike-stations/$bikeStationId/anchorages/$anchorageId/bike?rentToken=$rentToken")
+    val request = FakeRequest(POST, s"/bike-stations/$bikeStationId/anchorages/$anchorageId/bike/pickup?rentToken=$rentToken")
     val response = route(app, request).get
     status(response) mustBe OK
     contentAsJson(response).as[Bike]

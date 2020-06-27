@@ -45,6 +45,6 @@ http post 'http://localhost:9000/bike-stations/1/anchorages/1/bike?bikeSerialNum
 
 ### Pick-up Bike
 ```
-http 'http://localhost:9000/bike-stations/1/anchorages/1/bike?rentToken=1'
+http post 'http://localhost:9000/bike-stations/1/anchorages/1/bike/pickup?rentToken=1'
 ```
 
