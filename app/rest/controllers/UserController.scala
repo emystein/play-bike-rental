@@ -13,7 +13,7 @@ import rest.controllers.UserJsonMappers.{userWrites, _}
 @Singleton
 class UserController @Inject()(val controllerComponents: ControllerComponents, val userRepository: UserRepository, val tokenRegistry: TokenRegistry) extends BaseController {
   def create() = Action(parse.json[User]) { request =>
-    val user: User = userRepository.save(request.body)
+    val user = userRepository.save(request.body)
     Created(Json.toJson(user))
   }
 
