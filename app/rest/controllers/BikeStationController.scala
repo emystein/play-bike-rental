@@ -1,16 +1,17 @@
 package rest.controllers
 
 import ar.com.flow.bikerental.model._
-import ar.com.flow.bikerental.model.token.{ReservedRentToken, TokenRegistry}
+import ar.com.flow.bikerental.model.token.{ReservedRentToken, TokenRegistry, TokenRepository}
 import javax.inject.{Inject, Singleton}
 import play.api.libs.json._
 import play.api.mvc._
-import BikeJsonMappers._
-import BikeStationJsonMappers._
+import rest.controllers.BikeJsonMappers._
+import rest.controllers.BikeStationJsonMappers._
 
 @Singleton
 class BikeStationController @Inject()(val controllerComponents: ControllerComponents,
                                       val tokenRegistry: TokenRegistry,
+                                      val reservedRentTokenRepository: TokenRepository[ReservedRentToken],
                                       val bikeStationRepository: BikeStationRepository,
                                       val tripRegistry: TripRegistry,
                                       val bikeShop: BikeShop) extends BaseController {
@@ -45,7 +46,7 @@ class BikeStationController @Inject()(val controllerComponents: ControllerCompon
         station <- bikeStationRepository.getById(stationId)
         anchorage <- station.getAnchorageById(anchorageId)
         rentTokenValue <- rentToken
-        reservedToken <- tokenRegistry.getTokenByValue(rentTokenValue)
+        reservedToken <- reservedRentTokenRepository.getById(rentTokenValue)
         bike <- anchorage.releaseBike(reservedToken.asInstanceOf[ReservedRentToken])
       } yield bike
 
