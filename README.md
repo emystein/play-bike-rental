@@ -35,7 +35,7 @@ http http://localhost:9000/bikes/1
 
 ### Create Bike Station
 ```
-http post http://localhost:9000/bike-stations id=1 numberOfBikeAnchorages=10
+http post http://localhost:9000/bike-stations id=1 anchorageCount=10
 ```
 
 ### Park Bike

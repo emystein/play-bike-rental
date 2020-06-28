@@ -16,20 +16,20 @@ class BikeStationController @Inject()(val controllerComponents: ControllerCompon
                                       val bikeShop: BikeShop) extends BaseController {
 
   def create() = Action(parse.json[BikeStationDto]) { request =>
-    val bikeStation = BikeStation(request.body.id, request.body.numberOfBikeAnchorages.toInt, tripRegistry, bikeShop)
+    val bikeStation = BikeStation(request.body.id, request.body.anchorageCount.toInt, tripRegistry, bikeShop)
     val createdBikeStation = bikeStationRepository.save(bikeStation)
     Created(Json.toJson(createdBikeStation.id))
   }
 
   def retrieve(id: String) = Action {
     bikeStationRepository.getById(id)
-      .map(bikeStation => BikeStationDto(bikeStation.id, bikeStation.numberOfBikeAnchorages.toString))
+      .map(bikeStation => BikeStationDto(bikeStation.id, bikeStation.anchorageCount.toString))
       .map(bikeStation => Ok(Json.toJson(bikeStation)))
       .getOrElse(NotFound(id))
   }
 
   def parkBike(stationId: String, anchorageId: Int) = Action(parse.json[Bike]) { request =>
-    val maybeBikeStation: Option[BikeStation] = for {
+    val maybeBikeStation = for {
       station <- bikeStationRepository.getById(stationId)
       anchorage <- station.getAnchorageById(anchorageId)
       _ = anchorage.parkBike(request.body)
@@ -37,7 +37,7 @@ class BikeStationController @Inject()(val controllerComponents: ControllerCompon
       station
     }
 
-    maybeBikeStation.map(s => Ok(Json.toJson(BikeStationDto(s.id, s.numberOfBikeAnchorages.toString)))).getOrElse(NotFound)
+    maybeBikeStation.map(s => Ok(Json.toJson(BikeStationDto(s.id, s.anchorageCount.toString)))).getOrElse(NotFound)
   }
 
   def pickupBike(stationId: String, anchorageId: Int, rentToken: Option[String]) = Action {
@@ -53,7 +53,7 @@ class BikeStationController @Inject()(val controllerComponents: ControllerCompon
   }
 }
 
-case class BikeStationDto(id: Option[String], numberOfBikeAnchorages: String)
+case class BikeStationDto(id: Option[String], anchorageCount: String)
 
 case class BikePickUpRequest(rentToken: String)
 

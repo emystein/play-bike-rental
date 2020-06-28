@@ -13,15 +13,15 @@ import rest.controllers.BikeStationJsonMappers._
 class BikeStationControllerSpec extends PlaySpec with GuiceOneAppPerTest {
   "BikeStationController" should {
     "create and retrieve station" in {
-      create(bikeStationId = "1", numberOfBikeAnchorages = 10)
+      create(bikeStationId = "1", anchorageCount = 10)
 
       val bikeStation = retrieveBikeStation("1")
 
       bikeStation.id mustBe Some("1")
-      bikeStation.numberOfBikeAnchorages mustBe "10"
+      bikeStation.anchorageCount mustBe "10"
     }
     "park bike" in {
-      create(bikeStationId = "1", numberOfBikeAnchorages = 10)
+      create(bikeStationId = "1", anchorageCount = 10)
 
       parkBike(bikeStationId = "1", anchorageId = 1, bikeSerialNumber = "1")
     }
@@ -29,7 +29,7 @@ class BikeStationControllerSpec extends PlaySpec with GuiceOneAppPerTest {
       val user = User(Some(1), "emystein")
       createUser(user)
       val rentToken = reserveToken(user)
-      create(bikeStationId = "1", numberOfBikeAnchorages = 10)
+      create(bikeStationId = "1", anchorageCount = 10)
       parkBike(bikeStationId = "1", anchorageId = 1, bikeSerialNumber = "1")
 
       val bike = pickUpBike(bikeStationId = "1", anchorageId = 1, rentToken.value)
@@ -38,8 +38,8 @@ class BikeStationControllerSpec extends PlaySpec with GuiceOneAppPerTest {
     }
   }
 
-  private def create(bikeStationId: String, numberOfBikeAnchorages: Int): Unit = {
-    val bikeStation = BikeStationDto(Some(bikeStationId), numberOfBikeAnchorages.toString)
+  private def create(bikeStationId: String, anchorageCount: Int): Unit = {
+    val bikeStation = BikeStationDto(Some(bikeStationId), anchorageCount.toString)
     val request = FakeRequest(POST, "/bike-stations").withJsonBody(Json.toJson(bikeStation))
     val response = route(app, request).get
     status(response) mustBe CREATED
