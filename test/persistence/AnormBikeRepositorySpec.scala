@@ -23,20 +23,16 @@ class AnormBikeRepositorySpec extends PlaySpec with GuiceOneAppPerTest {
 
       repository.delete(bike)
 
-      val deletedBike = repository.getBySerialNumber("1")
-      deletedBike mustBe None
+      repository.getBySerialNumber("1") mustBe None
     }
     "get all bikes" in {
       val repository = app.injector.instanceOf[BikeRepository]
 
-      val bike1 = Bike("1")
-      repository.save(bike1)
-      val bike2 = Bike("2")
-      repository.save(bike2)
+      val allBikes = List(Bike("1"), Bike("2"))
 
-      val allBikes = repository.getAll()
+      allBikes.foreach(bike => repository.save(bike))
 
-      allBikes must contain theSameElementsAs allBikes
+      repository.getAll() must contain theSameElementsAs allBikes
     }
   }
 }

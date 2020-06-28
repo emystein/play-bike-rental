@@ -33,4 +33,10 @@ class AnormBikeRepository  @Inject()(db: Database) extends BikeRepository {
       SQL"delete from BIKE where serial_number=${bike.serialNumber}".executeUpdate()
     }
   }
+
+  override def clear(): Unit = {
+    db.withConnection { implicit connection =>
+      SQL"delete from BIKE".executeUpdate()
+    }
+  }
 }
