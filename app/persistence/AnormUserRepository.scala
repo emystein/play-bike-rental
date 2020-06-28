@@ -10,7 +10,7 @@ import anorm._
 @Singleton
 class AnormUserRepository @Inject()(db: Database) extends UserRepository {
   override def save(user: User): User = {
-    val id: Option[Long] = db.withConnection { implicit connection =>
+    val id = db.withConnection { implicit connection =>
       SQL"insert into USER (name) values (${user.name})".executeInsert()
     }
 

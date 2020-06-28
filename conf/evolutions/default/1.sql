@@ -8,8 +8,14 @@ CREATE TABLE USER (
     PRIMARY KEY (id)
 );
 
+CREATE TABLE BIKE (
+    serial_number varchar(255) NOT NULL,
+    PRIMARY KEY (serial_number)
+);
+
 -- !Downs
 
 DROP TABLE USER;
+DROP TABLE BIKE;
 
 
