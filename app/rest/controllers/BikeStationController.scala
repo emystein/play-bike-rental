@@ -53,6 +53,7 @@ class BikeStationController @Inject()(val controllerComponents: ControllerCompon
   }
 }
 
+// TODO change anchorageCount type to Int
 case class BikeStationDto(id: Option[String], anchorageCount: String)
 
 case class BikePickUpRequest(rentToken: String)
