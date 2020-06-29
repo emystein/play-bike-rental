@@ -25,7 +25,7 @@ class Module extends AbstractModule {
 
     bind(classOf[BikeStationRepository]).to(classOf[InMemoryBikeStationRepository]).asEagerSingleton()
 
-    val tripRegistry = TripRegistry(TripCompletionRulesFactory.create)
+    val tripRegistry = TripRegistry(tokenRegistry, TripCompletionRulesFactory.create)
     bind(classOf[TripRegistry]).toInstance(tripRegistry)
 
     val bikeShop = new BikeShop()

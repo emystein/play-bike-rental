@@ -15,7 +15,7 @@ class AnormReservedTokenRepositorySpec extends PlaySpec with GuiceOneAppPerTest 
 
       val repository = app.injector.instanceOf(classOf[AnormReservedRentTokenRepository])
 
-      val token = ReservedRentToken("1", LocalDateTime.now().plusDays(1), owner, tokenRegistry = null)
+      val token = ReservedRentToken("1", LocalDateTime.now().plusDays(1), owner)
 
       repository.save(token)
 
@@ -32,8 +32,8 @@ class AnormReservedTokenRepositorySpec extends PlaySpec with GuiceOneAppPerTest 
 
       val tokenExpiration = LocalDateTime.now().plusDays(1)
 
-      val token1 = ReservedRentToken("1", tokenExpiration, owner, tokenRegistry = null)
-      val token2 = ReservedRentToken("2", tokenExpiration, owner, tokenRegistry = null)
+      val token1 = ReservedRentToken("1", tokenExpiration, owner)
+      val token2 = ReservedRentToken("2", tokenExpiration, owner)
 
       val allTokens = List(token1, token2)
 
@@ -48,9 +48,9 @@ class AnormReservedTokenRepositorySpec extends PlaySpec with GuiceOneAppPerTest 
 
       val tokenExpiration = LocalDateTime.now().plusDays(1)
 
-      val token1 = ReservedRentToken("1", tokenExpiration, owner, tokenRegistry = null)
-      val token2 = ReservedRentToken("2", tokenExpiration, owner, tokenRegistry = null)
-      val tokenOwnedByOther = ReservedRentToken("3", tokenExpiration, User(Some(owner.id.get + 1), "Other"), tokenRegistry = null)
+      val token1 = ReservedRentToken("1", tokenExpiration, owner)
+      val token2 = ReservedRentToken("2", tokenExpiration, owner)
+      val tokenOwnedByOther = ReservedRentToken("3", tokenExpiration, User(Some(owner.id.get + 1), "Other"))
 
       val allReservedRentTokens = List(token1, token2, tokenOwnedByOther)
 

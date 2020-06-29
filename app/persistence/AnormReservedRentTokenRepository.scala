@@ -30,7 +30,7 @@ class AnormReservedRentTokenRepository  @Inject()(db: Database) extends TokenRep
     }
 
    // TODO inject TokenRegistry to ReservedRentToken
-   retrievedDto.map(d => ReservedRentToken(d.value, d.expiration, d.owner, null))
+   retrievedDto.map(d => ReservedRentToken(d.value, d.expiration, d.owner))
   }
 
   override def getAll(): Iterable[ReservedRentToken] = {
@@ -41,7 +41,7 @@ class AnormReservedRentTokenRepository  @Inject()(db: Database) extends TokenRep
         .as(parser.*)
     }
 
-    retrievedDtos.map(d => ReservedRentToken(d.value, d.expiration, d.owner, null))
+    retrievedDtos.map(d => ReservedRentToken(d.value, d.expiration, d.owner))
   }
 
   override def getAllByUser(user: User): Iterable[ReservedRentToken] = {
@@ -53,7 +53,7 @@ class AnormReservedRentTokenRepository  @Inject()(db: Database) extends TokenRep
         .as(parser.*)
     }
 
-    retrievedDtos.map(d => ReservedRentToken(d.value, d.expiration, d.owner, null))
+    retrievedDtos.map(d => ReservedRentToken(d.value, d.expiration, d.owner))
   }
 
   override def contains(token: ReservedRentToken): Boolean = {
