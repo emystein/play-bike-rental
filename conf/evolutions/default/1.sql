@@ -13,9 +13,17 @@ CREATE TABLE BIKE (
     PRIMARY KEY (serial_number)
 );
 
+CREATE TABLE RESERVED_RENT_TOKEN (
+    id varchar(255) NOT NULL,
+    owner_id bigint(20) NOT NULL,
+    expiration timestamp NOT NULL,
+    PRIMARY KEY (id)
+);
+
 -- !Downs
 
 DROP TABLE USER;
 DROP TABLE BIKE;
+DROP TABLE RESERVED_RENT_TOKEN;
 
 

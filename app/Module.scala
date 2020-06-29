@@ -19,11 +19,8 @@ class Module extends AbstractModule {
 
     val consumedRentTokenRepository = new InMemoryConsumedRentTokenRepository()
     bind(new TypeLiteral[TokenRepository[ConsumedRentToken]] {}).toInstance(consumedRentTokenRepository)
-    
-    val tokenRegistry = TokenRegistry(new Random(),
-      reservedRentTokenRepository,
-      consumedRentTokenRepository
-    )
+
+    val tokenRegistry = TokenRegistry(new Random(), reservedRentTokenRepository, consumedRentTokenRepository)
     bind(classOf[TokenRegistry]).toInstance(tokenRegistry)
 
     bind(classOf[BikeStationRepository]).to(classOf[InMemoryBikeStationRepository]).asEagerSingleton()
