@@ -1,16 +1,15 @@
 package persistence
 
 import anorm._
-import ar.com.flow.bikerental.model.{Bike, User}
-import ar.com.flow.bikerental.model.token.{ReservedRentToken, TokenRegistry, TokenRepository}
+import ar.com.flow.bikerental.model.User
+import ar.com.flow.bikerental.model.token.{ReservedRentToken, TokenRepository}
 import javax.inject.{Inject, Singleton}
 import play.api.db.Database
-import rest.controllers.ReservedRentTokenDto
 
 @Singleton
 class AnormReservedRentTokenRepository  @Inject()(db: Database) extends TokenRepository[ReservedRentToken] {
   implicit val userParser = Macro.parser[User]("owner_id", "name")
-  val parser: RowParser[ReservedRentTokenDto] = Macro.indexedParser[ReservedRentTokenDto]
+  val rowParser = Macro.indexedParser[ReservedRentToken]
 
   override def save(token: ReservedRentToken): Unit = {
     db.withConnection { implicit connection =>
@@ -21,39 +20,32 @@ class AnormReservedRentTokenRepository  @Inject()(db: Database) extends TokenRep
   }
 
   override def getById(id: String): Option[ReservedRentToken] = {
-    val retrievedDto: Option[ReservedRentTokenDto] = db.withConnection { implicit connection =>
+    db.withConnection { implicit connection =>
       SQL"""select token.id, token.expiration, token.owner_id, user.name
             from RESERVED_RENT_TOKEN token, USER user
             where token.id = $id
             and token.owner_id = user.id"""
-        .as(parser.singleOpt)
+        .as(rowParser.singleOpt)
     }
-
-   // TODO inject TokenRegistry to ReservedRentToken
-   retrievedDto.map(d => ReservedRentToken(d.value, d.expiration, d.owner))
   }
 
   override def getAll(): Iterable[ReservedRentToken] = {
-    val retrievedDtos = db.withConnection { implicit connection =>
+    db.withConnection { implicit connection =>
       SQL"""select token.id, token.expiration, token.owner_id, user.name
             from RESERVED_RENT_TOKEN token, USER user
             where token.owner_id = user.id"""
-        .as(parser.*)
+        .as(rowParser.*)
     }
-
-    retrievedDtos.map(d => ReservedRentToken(d.value, d.expiration, d.owner))
   }
 
   override def getAllByUser(user: User): Iterable[ReservedRentToken] = {
-    val retrievedDtos = db.withConnection { implicit connection =>
+    db.withConnection { implicit connection =>
       SQL"""select token.id, token.expiration, token.owner_id, user.name
             from RESERVED_RENT_TOKEN token, USER user
             where token.owner_id = user.id
             and token.owner_id = ${user.id}"""
-        .as(parser.*)
+        .as(rowParser.*)
     }
-
-    retrievedDtos.map(d => ReservedRentToken(d.value, d.expiration, d.owner))
   }
 
   override def contains(token: ReservedRentToken): Boolean = {

@@ -1,7 +1,5 @@
 package rest.controllers
 
-import java.time.LocalDateTime
-
 import ar.com.flow.bikerental.model.token.{ReservedRentToken, TokenRegistry}
 import ar.com.flow.bikerental.model.{User, UserRepository}
 import javax.inject.{Inject, Singleton}
@@ -35,10 +33,8 @@ object UserJsonMappers {
   implicit val userWrites: Writes[User] = Json.writes[User]
 }
 
-case class ReservedRentTokenDto(value: String, expiration: LocalDateTime, owner: User)
-
 object RentTokenJsonMappers {
-  implicit val rentTokenReads = Json.reads[ReservedRentTokenDto]
+  implicit val rentTokenReads = Json.reads[ReservedRentToken]
 
   implicit val reservedRentTokenWrites: Writes[ReservedRentToken] =
     (o: ReservedRentToken) => Json.obj(

@@ -1,6 +1,7 @@
 package rest.controllers
 
 import ar.com.flow.bikerental.model.User
+import ar.com.flow.bikerental.model.token.ReservedRentToken
 import org.scalatest.MustMatchers
 import play.api.Application
 import play.api.libs.json.Json
@@ -24,9 +25,9 @@ object UserApi extends MustMatchers {
     contentAsJson(response).as[User]
   }
 
-  def reserveToken(user: User)(implicit app: Application): ReservedRentTokenDto = {
+  def reserveToken(user: User)(implicit app: Application): ReservedRentToken = {
     val response = route(app, FakeRequest(GET, s"/users/${user.id.get}/rent-token")).get
     status(response) mustBe OK
-    contentAsJson(response).as[ReservedRentTokenDto]
+    contentAsJson(response).as[ReservedRentToken]
   }
 }
