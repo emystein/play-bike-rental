@@ -7,7 +7,7 @@ import javax.inject.{Inject, Singleton}
 import play.api.db.Database
 
 @Singleton
-class AnormReservedRentTokenRepository  @Inject()(db: Database) extends TokenRepository[ReservedRentToken] {
+class AnormReservedRentTokenRepository @Inject()(db: Database) extends TokenRepository[ReservedRentToken] {
   implicit val userParser = Macro.parser[User]("owner_id", "name")
   val rowParser = Macro.indexedParser[ReservedRentToken]
 

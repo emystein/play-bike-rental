@@ -6,7 +6,7 @@ import javax.inject.{Inject, Singleton}
 import play.api.db.Database
 
 @Singleton
-class AnormBikeRepository  @Inject()(db: Database) extends BikeRepository {
+class AnormBikeRepository @Inject()(db: Database) extends BikeRepository {
   val parser: RowParser[Bike] = Macro.indexedParser[Bike]
   
   override def save(bike: Bike): Unit = {
