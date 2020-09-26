@@ -1,5 +1,11 @@
+# Introduction
+REST API for a public bike rental system. Implemented in Scala and Play.
+
+# Related projects
+The object model lives in a separate project: https://github.com/emystein/scala-object-oriented-bike-rental-model
+
 # REST API
-The examples are written in [httpie](https://httpie.org/) syntax.
+The examples requests are in [httpie](https://httpie.org/) syntax.
 
 ## User
 
